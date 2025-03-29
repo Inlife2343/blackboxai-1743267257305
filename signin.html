@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - Artis Symbiose India</title>
+    <link href="/dist/output.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--surface, #F8F9FA);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(255, 107, 53, 0.1) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(46, 196, 182, 0.1) 0px, transparent 50%),
+                radial-gradient(at 50% 100%, rgba(255, 159, 28, 0.1) 0px, transparent 50%);
+            background-attachment: fixed;
+        }
+        .chat-container {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body class="min-h-screen p-4">
+    <!-- Language Selector -->
+    <div class="absolute top-4 right-4">
+        <select id="languageSelect" class="bg-white rounded-lg px-4 py-2 shadow-lg" onchange="changeLanguage()">
+            <option value="en">English</option>
+            <option value="hi">हिंदी</option>
+            <option value="ta">தமிழ்</option>
+            <option value="te">తెలుగు</option>
+            <option value="bn">বাংলা</option>
+            <option value="mr">मराठी</option>
+        </select>
+    </div>
+
+    <div class="container mx-auto flex flex-col lg:flex-row gap-8 items-start justify-center py-8">
+        <!-- Main Sign In Form -->
+        <div class="w-full lg:w-1/2 bg-white/80 backdrop-blur-sm rounded-2xl shadow-2xl p-8 border border-white/20">
+            <div class="flex justify-center mb-6 transform hover:scale-105 transition-transform duration-300">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/55/Emblem_of_India.svg" alt="Indian Emblem" class="h-16">
+            </div>
+            <h1 class="text-4xl font-bold text-center mb-2 text-gray-800" id="welcomeText">Welcome To Artis Symbiose India</h1>
+            <p class="text-center text-gray-600 mb-8" id="roleText">Sign in as a Patient</p>
+
+            <!-- Sign In Form -->
+            <div id="signInForm">
+                <form onsubmit="handleSignIn(event)" class="space-y-6">
+                    <div id="hospitalFields" class="hidden space-y-6">
+                        <div>
+                            <label class="block text-gray-700 mb-2" id="hospitalNameLabel">Hospital Name</label>
+                            <input type="text" id="hospitalName" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-2" id="cityLabel">City</label>
+                            <input type="text" id="city" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-2" id="stateLabel">State</label>
+                            <select id="state" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="">Select State</option>
+                                <option value="AP">Andhra Pradesh</option>
+                                <option value="AR">Arunachal Pradesh</option>
+                                <option value="AS">Assam</option>
+                                <option value="BR">Bihar</option>
+                                <option value="CG">Chhattisgarh</option>
+                                <option value="GA">Goa</option>
+                                <option value="GJ">Gujarat</option>
+                                <option value="HR">Haryana</option>
+                                <option value="HP">Himachal Pradesh</option>
+                                <option value="JH">Jharkhand</option>
+                                <option value="KA">Karnataka</option>
+                                <option value="KL">Kerala</option>
+                                <option value="MP">Madhya Pradesh</option>
+                                <option value="MH">Maharashtra</option>
+                                <option value="MN">Manipur</option>
+                                <option value="ML">Meghalaya</option>
+                                <option value="MZ">Mizoram</option>
+                                <option value="NL">Nagaland</option>
+                                <option value="OR">Odisha</option>
+                                <option value="PB">Punjab</option>
+                                <option value="RJ">Rajasthan</option>
+                                <option value="SK">Sikkim</option>
+                                <option value="TN">Tamil Nadu</option>
+                                <option value="TG">Telangana</option>
+                                <option value="TR">Tripura</option>
+                                <option value="UP">Uttar Pradesh</option>
+                                <option value="UK">Uttarakhand</option>
+                                <option value="WB">West Bengal</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-2" id="pincodeLabel">Pincode</label>
+                            <input type="text" id="pincode" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-2" id="licenseLabel">Medical License Number</label>
+                            <input type="text" id="license" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                    </div>
+
+                    <div id="patientFields" class="space-y-6">
+                        <div>
+                            <label class="block text-gray-700 mb-2" id="aadhaarLabel">Aadhaar Number</label>
+                            <input type="text" id="aadhaar" maxlength="12" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter 12-digit Aadhaar number">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-700 mb-2" id="emailLabel">Email Address</label>
+                        <input type="email" id="email" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-700 mb-2" id="phoneLabel">Phone Number</label>
+                        <div class="flex gap-4">
+                            <div class="w-20">
+                                <input type="text" value="+91" readonly class="w-full px-4 py-3 rounded-lg border border-gray-300 bg-gray-50">
+                            </div>
+                            <input type="tel" id="phone" required class="flex-1 px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <button type="button" onclick="sendOTP()" class="px-6 py-3 bg-primary text-white rounded-lg hover:bg-accent transition-all duration-300 transform hover:scale-[1.02]" id="sendOtpButton">
+                                Send OTP
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="otpSection" class="hidden">
+                        <label class="block text-gray-700 mb-2" id="otpLabel">Enter OTP</label>
+                        <input type="text" id="otp" maxlength="6" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+
+            <button type="submit" class="w-full py-3 bg-primary text-white rounded-lg hover:bg-accent transition-all duration-300 transform hover:scale-[1.02]" id="signInButton">
+                        Sign In
+                    </button>
+
+                    <!-- Ayushman Bharat Integration -->
+            <div class="mt-4 p-4 bg-success/10 rounded-lg border border-success/20">
+                        <div class="flex items-center gap-3 mb-2">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Ayushman_Bharat_Logo.png/220px-Ayushman_Bharat_Logo.png" 
+                                 alt="Ayushman Bharat" class="h-8">
+                            <h3 class="font-semibold text-green-800" id="ayushmanText">Ayushman Bharat Beneficiary?</h3>
+                        </div>
+                        <p class="text-sm text-green-700" id="ayushmanDesc">Link your Ayushman Bharat card for seamless benefits</p>
+                        <button type="button" class="mt-2 px-4 py-2 bg-success text-white rounded-lg hover:opacity-90 transition-all duration-300 transform hover:scale-[1.02] text-sm" id="linkAyushmanButton">
+                            Link Card
+                        </button>
+                    </div>
+                </form>
+
+                <div class="mt-6 text-center">
+                    <p class="text-gray-600" id="noAccountText">Don't have an account?</p>
+                    <button onclick="toggleView('signup')" class="mt-2 text-primary hover:text-accent font-medium transition-colors duration-300" id="createAccountButton">
+                        Create One
+                    </button>
+                </div>
+            </div>
+
+            <!-- Sign Up Form -->
+            <div id="signUpForm" class="hidden">
+                <!-- Similar structure as Sign In form with additional fields -->
+                <!-- Form content will be similar to sign in but with registration specific fields -->
+            </div>
+        </div>
+
+        <!-- AI Doctor Chat Widget -->
+        <div class="w-full lg:w-1/2 bg-white/80 backdrop-blur-sm rounded-2xl shadow-2xl p-8 border border-white/20">
+            <div class="flex items-center gap-4 mb-6">
+                <div class="w-12 h-12 bg-info rounded-full flex items-center justify-center transform hover:scale-110 transition-transform duration-300">
+                    <i class="fas fa-robot text-white text-2xl"></i>
+                </div>
+                <div>
+                    <h2 class="text-xl font-semibold" id="aiDoctorTitle">AI Doctor</h2>
+                    <p class="text-gray-600" id="aiDoctorDesc">Ask me about Opthermo medical terms</p>
+                </div>
+            </div>
+
+            <div class="chat-container bg-gray-50 rounded-xl p-4 mb-4" id="chatMessages">
+                <div class="flex gap-3 mb-4">
+                    <div class="w-8 h-8 bg-info rounded-full flex items-center justify-center transform hover:scale-110 transition-transform duration-300">
+                        <i class="fas fa-robot text-white text-sm"></i>
+                    </div>
+                    <div class="bg-white p-3 rounded-lg shadow-sm max-w-[80%]">
+                        <p id="aiWelcomeMessage">Hello! I'm your AI Doctor assistant. I can help you understand Opthermo medical terms. What would you like to know?</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex gap-4">
+                <input type="text" id="chatInput" placeholder="Ask about Opthermo medical terms..." 
+                    class="flex-1 px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <button onclick="sendMessage()" class="px-6 py-3 bg-info text-white rounded-lg hover:opacity-90 transition-all duration-300 transform hover:scale-[1.02]">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const translations = {
+            en: {
+                welcomeText: "Welcome To Artis Symbiose India",
+                roleText: "Sign in as a Patient",
+                hospitalNameLabel: "Hospital Name",
+                cityLabel: "City",
+                stateLabel: "State",
+                pincodeLabel: "Pincode",
+                licenseLabel: "Medical License Number",
+                aadhaarLabel: "Aadhaar Number",
+                emailLabel: "Email Address",
+                phoneLabel: "Phone Number",
+                sendOtpButton: "Send OTP",
+                otpLabel: "Enter OTP",
+                signInButton: "Sign In",
+                noAccountText: "Don't have an account?",
+                createAccountButton: "Create One",
+                aiDoctorTitle: "AI Doctor",
+                aiDoctorDesc: "Ask me about Opthermo medical terms",
+                aiWelcomeMessage: "Hello! I'm your AI Doctor assistant. I can help you understand Opthermo medical terms. What would you like to know?",
+                ayushmanText: "Ayushman Bharat Beneficiary?",
+                ayushmanDesc: "Link your Ayushman Bharat card for seamless benefits",
+                linkAyushmanButton: "Link Card"
+            },
+            hi: {
+                welcomeText: "आर्टिस सिम्बायोस इंडिया में आपका स्वागत है",
+                roleText: "मरीज़ के रूप में साइन इन करें",
+                hospitalNameLabel: "अस्पताल का नाम",
+                cityLabel: "शहर",
+                stateLabel: "राज्य",
+                pincodeLabel: "पिनकोड",
+                licenseLabel: "मेडिकल लाइसेंस नंबर",
+                aadhaarLabel: "आधार नंबर",
+                emailLabel: "ईमेल पता",
+                phoneLabel: "फोन नंबर",
+                sendOtpButton: "OTP भेजें",
+                otpLabel: "OTP दर्ज करें",
+                signInButton: "साइन इन करें",
+                noAccountText: "खाता नहीं है?",
+                createAccountButton: "नया खाता बनाएं",
+                aiDoctorTitle: "AI डॉक्टर",
+                aiDoctorDesc: "ऑप्थर्मो मेडिकल टर्म्स के बारे में पूछें",
+                aiWelcomeMessage: "नमस्ते! मैं आपका AI डॉक्टर सहायक हूं। मैं आपको ऑप्थर्मो मेडिकल टर्म्स समझने में मदद कर सकता हूं। आप क्या जानना चाहेंगे?",
+                ayushmanText: "आयुष्मान भारत लाभार्थी?",
+                ayushmanDesc: "निर्बाध लाभ के लिए अपना आयुष्मान भारत कार्ड लिंक करें",
+                linkAyushmanButton: "कार्ड लिंक करें"
+            }
+            // Add more translations for other languages
+        };
+
+        function changeLanguage() {
+            const lang = document.getElementById('languageSelect').value;
+            const texts = translations[lang] || translations.en;
+
+            // Update all text content
+            Object.keys(texts).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) {
+                    if (element.tagName === 'INPUT' && element.type === 'text') {
+                        element.placeholder = texts[key];
+                    } else {
+                        element.textContent = texts[key];
+                    }
+                }
+            });
+        }
+
+        // Get role from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const role = urlParams.get('role') || localStorage.getItem('userRole') || 'patient';
+        document.getElementById('roleText').textContent = `Sign in as a ${role.charAt(0).toUpperCase() + role.slice(1)}`;
+
+        // Show/hide hospital fields based on role
+        if (role === 'hospital') {
+            document.getElementById('hospitalFields').classList.remove('hidden');
+            document.getElementById('patientFields').classList.add('hidden');
+        }
+
+        let otpSent = false;
+
+        function toggleView(view) {
+            document.getElementById('signInForm').classList.toggle('hidden', view === 'signup');
+            document.getElementById('signUpForm').classList.toggle('hidden', view === 'signin');
+        }
+
+        function validateAadhaar(aadhaar) {
+            return /^\d{12}$/.test(aadhaar);
+        }
+
+        function sendOTP() {
+            const phone = document.getElementById('phone').value;
+            if (!phone) {
+                alert('Please enter a phone number');
+                return;
+            }
+            
+            otpSent = true;
+            document.getElementById('otpSection').classList.remove('hidden');
+            alert('OTP sent! (Use 123456 for testing)');
+        }
+
+        function handleSignIn(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const otp = document.getElementById('otp').value;
+
+            if (!otpSent) {
+                alert('Please request OTP first');
+                return;
+            }
+
+            if (otp !== '123456') {
+                alert('Invalid OTP');
+                return;
+            }
+
+            if (role === 'patient') {
+                const aadhaar = document.getElementById('aadhaar').value;
+                if (!validateAadhaar(aadhaar)) {
+                    alert('Please enter a valid 12-digit Aadhaar number');
+                    return;
+                }
+            }
+
+            // Store user info
+            localStorage.setItem('userEmail', email);
+            localStorage.setItem('userName', email.split('@')[0]);
+            localStorage.setItem('userRole', role);
+
+            // Store hospital info if applicable
+            if (role === 'hospital') {
+                localStorage.setItem('hospitalName', document.getElementById('hospitalName').value);
+                localStorage.setItem('hospitalCity', document.getElementById('city').value);
+                localStorage.setItem('hospitalState', document.getElementById('state').value);
+                localStorage.setItem('hospitalPincode', document.getElementById('pincode').value);
+                localStorage.setItem('hospitalLicense', document.getElementById('license').value);
+            }
+
+            // Redirect based on role
+            window.location.href = role === 'hospital' ? 'hospital-dashboard.html' : 'dashboard.html';
+        }
+
+        // AI Doctor Chat functionality
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            if (!message) return;
+
+            // Add user message
+            addMessage(message, 'user');
+            input.value = '';
+
+            // Simulate AI response
+            setTimeout(() => {
+                const response = processMessage(message);
+                addMessage(response, 'ai');
+            }, 1000);
+        }
+
+        function addMessage(message, sender) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'flex gap-3 mb-4' + (sender === 'user' ? ' justify-end' : '');
+            
+            if (sender === 'ai') {
+                messageDiv.innerHTML = `
+                    <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+                        <i class="fas fa-robot text-white text-sm"></i>
+                    </div>
+                    <div class="bg-white p-3 rounded-lg shadow-sm max-w-[80%]">
+                        <p>${message}</p>
+                    </div>
+                `;
+            } else {
+                messageDiv.innerHTML = `
+                    <div class="bg-primary p-3 rounded-lg shadow-sm max-w-[80%]">
+                        <p class="text-white">${message}</p>
+                    </div>
+                `;
+            }
+            
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function processMessage(message) {
+            // Simple keyword-based response system
+            const ophtermoTerms = ['eye', 'vision', 'retina', 'cornea', 'lens', 'optic'];
+            const hasOphtermoTerm = ophtermoTerms.some(term => message.toLowerCase().includes(term));
+            
+            if (hasOphtermoTerm) {
+                return "I understand you're asking about " + message + ". This is related to ophthalmology. I can provide more specific information about this topic. What would you like to know?";
+            } else {
+                return "I can only answer questions related to Opthermo medical terms. Please ask something related to eye health and vision.";
+            }
+        }
+
+        // Add enter key support for chat
+        document.getElementById('chatInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>
