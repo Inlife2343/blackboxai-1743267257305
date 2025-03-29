@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Dashboard - Artis Symbiose India</title>
+    <link href="/dist/output.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --safe-bottom: env(safe-area-inset-bottom, 0px);
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--surface, #F8F9FA);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(255, 107, 53, 0.1) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(46, 196, 182, 0.1) 0px, transparent 50%),
+                radial-gradient(at 50% 100%, rgba(255, 159, 28, 0.1) 0px, transparent 50%);
+            background-attachment: fixed;
+            -webkit-tap-highlight-color: transparent;
+            overscroll-behavior-y: contain;
+        }
+        
+        .gradient-card {
+            background: linear-gradient(135deg, var(--primary, #FF6B35) 0%, var(--secondary, #2EC4B6) 100%);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Mobile-specific styles */
+        @media (max-width: 768px) {
+            .mobile-bottom-nav {
+                padding-bottom: var(--safe-bottom);
+            }
+            
+            .mobile-menu-content {
+                padding-bottom: calc(1rem + var(--safe-bottom));
+            }
+        }
+
+        /* Touch feedback */
+        @media (hover: none) {
+            .touch-feedback:active {
+                opacity: 0.7;
+                transform: scale(0.98);
+            }
+        }
+
+        /* Animations */
+        .animate-fade-in {
+            animation: fadeIn 0.2s ease-out;
+        }
+
+        .animate-slide-up {
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+
+        /* Smooth scrolling for iOS */
+        .smooth-scroll {
+            -webkit-overflow-scrolling: touch;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="bg-white/80 backdrop-blur-sm shadow-lg border-b border-white/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center gap-4">
+                    <img src="icons/aayin-prime-logo.svg" alt="AAYIN PRIME LLP" class="h-12">
+                    <div class="flex flex-col">
+                        <span class="text-2xl font-bold text-gray-800">AAYIN PRIME LLP</span>
+                        <span class="text-sm text-gray-600">WHERE YOUR EYES COMES FIRST</span>
+                    </div>
+                </div>
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center gap-6">
+                    <select id="languageSelect" class="bg-gray-50 rounded-lg px-3 py-1" onchange="changeLanguage()">
+                        <option value="en">English</option>
+                        <option value="hi">हिंदी</option>
+                        <option value="ta">தமிழ்</option>
+                        <option value="te">తెలుగు</option>
+                        <option value="bn">বাংলা</option>
+                        <option value="mr">मराठी</option>
+                    </select>
+                    <a href="appointments.html" class="text-gray-600 hover:text-gray-900">
+                        <i class="fas fa-calendar-alt mr-2"></i>Appointments
+                    </a>
+                    <a href="medication.html" class="text-gray-600 hover:text-gray-900">
+                        <i class="fas fa-pills mr-2"></i>Medications
+                    </a>
+                    <button onclick="logout()" class="text-gray-600 hover:text-gray-900">
+                        <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 mobile-bottom-nav shadow-lg">
+        <div class="grid grid-cols-4 h-16">
+            <a href="dashboard.html" class="flex flex-col items-center justify-center text-primary touch-feedback">
+                <i class="fas fa-home text-xl"></i>
+                <span class="text-xs mt-1">Home</span>
+            </a>
+            <a href="appointments.html" class="flex flex-col items-center justify-center text-gray-600 touch-feedback">
+                <i class="fas fa-calendar-alt text-xl"></i>
+                <span class="text-xs mt-1">Appointments</span>
+            </a>
+            <a href="medication.html" class="flex flex-col items-center justify-center text-gray-600 touch-feedback">
+                <i class="fas fa-pills text-xl"></i>
+                <span class="text-xs mt-1">Medications</span>
+            </a>
+            <button onclick="showMenu()" class="flex flex-col items-center justify-center text-gray-600 w-full touch-feedback">
+                <i class="fas fa-bars text-xl"></i>
+                <span class="text-xs mt-1">More</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Modal -->
+    <div id="mobileMenu" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden animate-fade-in">
+        <div class="absolute bottom-16 left-0 right-0 bg-white rounded-t-2xl p-4 mobile-menu-content animate-slide-up shadow-up">
+            <div class="space-y-4">
+                <select id="mobileLangSelect" class="w-full bg-gray-50 rounded-lg px-3 py-2" onchange="changeLanguage()">
+                    <option value="en">English</option>
+                    <option value="hi">हिंदी</option>
+                    <option value="ta">தமிழ்</option>
+                    <option value="te">తెలుగు</option>
+                    <option value="bn">বাংলা</option>
+                    <option value="mr">मराठी</option>
+                </select>
+                <button onclick="logout()" class="w-full text-left px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">
+                    <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                </button>
+                <button onclick="hideMenu()" class="w-full text-center text-gray-600 py-2">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-24 md:pb-8">
+        <!-- Welcome Section -->
+        <div class="gradient-card rounded-2xl p-8 mb-8 text-white">
+            <h1 class="text-3xl font-bold mb-2">Welcome <span id="userName">User</span></h1>
+            <p class="opacity-90">Here's your health overview</p>
+            <div class="mt-4 flex items-center gap-4">
+                <span class="bg-info/50 text-white px-3 py-1 rounded-full text-sm backdrop-blur-sm">
+                    <i class="fas fa-id-card mr-1"></i>Aadhaar Linked
+                </span>
+                <span class="bg-success/50 text-white px-3 py-1 rounded-full text-sm backdrop-blur-sm">
+                    <i class="fas fa-shield-alt mr-1"></i>Ayushman Bharat Active
+                </span>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="grid md:grid-cols-3 gap-8 mb-8">
+            <!-- Book Appointment Card -->
+            <a href="appointments.html" class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] border border-white/20 group cursor-pointer touch-feedback">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="w-12 h-12 bg-info/10 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                        <i class="fas fa-calendar-plus text-info text-2xl"></i>
+                    </div>
+                    <h2 class="text-xl font-semibold">Book Appointment</h2>
+                </div>
+                <p class="text-gray-600">Schedule a visit with nearby hospitals</p>
+                <div class="mt-4 text-sm text-blue-600">
+                    <i class="fas fa-map-marker-alt mr-1"></i>Find hospitals near you
+                </div>
+            </a>
+
+            <!-- Manage Medications Card -->
+            <a href="medication.html" class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] border border-white/20 group cursor-pointer touch-feedback">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="w-12 h-12 bg-secondary/10 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                        <i class="fas fa-pills text-secondary text-2xl"></i>
+                    </div>
+                    <h2 class="text-xl font-semibold">Medications</h2>
+                </div>
+                <p class="text-gray-600">Manage your prescriptions and reminders</p>
+                <div class="mt-4 text-sm text-purple-600">
+                    <i class="fas fa-clock mr-1"></i>View medication schedule
+                </div>
+            </a>
+
+            <!-- View Reports Card -->
+            <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] border border-white/20 group cursor-pointer touch-feedback">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="w-12 h-12 bg-success/10 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                        <i class="fas fa-file-medical text-success text-2xl"></i>
+                    </div>
+                    <h2 class="text-xl font-semibold">Medical Reports</h2>
+                </div>
+                <p class="text-gray-600">Access your medical history and reports</p>
+                <div class="mt-4 text-sm text-green-600">
+                    <i class="fas fa-download mr-1"></i>Download reports
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Grid -->
+        <div class="grid md:grid-cols-2 gap-8">
+            <!-- Patient Data Section -->
+            <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-white/20">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-12 h-12 bg-info/10 rounded-full flex items-center justify-center transform hover:scale-110 transition-transform duration-300">
+                        <i class="fas fa-user-circle text-info text-2xl"></i>
+                    </div>
+                    <h2 class="text-2xl font-semibold">Patient Data</h2>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="p-4 bg-gray-50 rounded-lg">
+                        <div class="text-sm text-gray-600 mb-1">Patient ID</div>
+                        <div class="font-medium">AS-2024-001</div>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-lg">
+                        <div class="text-sm text-gray-600 mb-1">Aadhaar Number</div>
+                        <div class="font-medium">XXXX-XXXX-1234</div>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-lg">
+                        <div class="text-sm text-gray-600 mb-1">Blood Type</div>
+                        <div class="font-medium">O+</div>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-lg">
+                        <div class="text-sm text-gray-600 mb-1">Last Check-up</div>
+                        <div class="font-medium">January 15, 2024</div>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-lg">
+                        <div class="text-sm text-gray-600 mb-1">Next Appointment</div>
+                        <div class="font-medium">February 28, 2024</div>
+                    </div>
+                    <div class="p-4 bg-success/10 rounded-lg border border-success/20">
+                        <div class="flex items-center gap-3 mb-2">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Ayushman_Bharat_Logo.png/220px-Ayushman_Bharat_Logo.png" 
+                                 alt="Ayushman Bharat" class="h-8">
+                            <div>
+                                <div class="text-sm text-gray-600">Ayushman Bharat Status</div>
+                                <div class="font-medium text-green-700">Active</div>
+                            </div>
+                        </div>
+                <button class="mt-2 w-full px-4 py-2 bg-success text-white rounded-lg hover:opacity-90 transition-all duration-300 transform hover:scale-[1.02] text-sm touch-feedback">
+                            View Benefits
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Medical History Section -->
+            <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-white/20">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-12 h-12 bg-success/10 rounded-full flex items-center justify-center transform hover:scale-110 transition-transform duration-300">
+                        <i class="fas fa-file-medical text-success text-2xl"></i>
+                    </div>
+                    <h2 class="text-2xl font-semibold">Medical History</h2>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="p-4 bg-gray-50 rounded-lg">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="font-medium">Eye Examination</div>
+                                <p class="text-sm text-gray-600">Routine check-up and prescription update</p>
+                                <p class="text-sm text-gray-500">December 15, 2023</p>
+                            </div>
+                            <button class="text-info hover:text-accent transition-colors duration-300">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-gray-50 rounded-lg">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="font-medium">Vision Test</div>
+                                <p class="text-sm text-gray-600">Complete vision assessment</p>
+                                <p class="text-sm text-gray-500">November 30, 2023</p>
+                            </div>
+                            <button class="text-info hover:text-accent transition-colors duration-300">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-gray-50 rounded-lg">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="font-medium">Retina Scan</div>
+                                <p class="text-sm text-gray-600">Detailed retinal examination</p>
+                                <p class="text-sm text-gray-500">October 15, 2023</p>
+                            </div>
+                            <button class="text-info hover:text-accent transition-colors duration-300">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-gray-50 rounded-lg">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="font-medium">Follow-up Consultation</div>
+                                <p class="text-sm text-gray-600">Post-treatment review</p>
+                                <p class="text-sm text-gray-500">September 28, 2023</p>
+                            </div>
+                            <button class="text-info hover:text-accent transition-colors duration-300">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Doctor Chat Widget -->
+        <div class="mt-8 bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-white/20">
+            <div class="flex items-center gap-4 mb-6">
+                <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center transform hover:scale-110 transition-transform duration-300">
+                    <i class="fas fa-robot text-primary text-2xl"></i>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-semibold">AI Doctor</h2>
+                    <p class="text-gray-600">Ask me about Opthermo medical terms</p>
+                </div>
+            </div>
+
+            <div id="chatMessages" class="h-64 overflow-y-auto bg-gray-50 rounded-xl p-4 mb-4">
+                <div class="flex gap-3 mb-4">
+                    <div class="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center">
+                        <i class="fas fa-robot text-white text-sm"></i>
+                    </div>
+                    <div class="bg-white p-3 rounded-lg shadow-sm max-w-[80%]">
+                        <p>Hello! I'm your AI Doctor assistant. How can I help you today?</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex gap-4">
+                <input type="text" id="chatInput" placeholder="Ask about Opthermo medical terms..." 
+                    class="flex-1 px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                <button onclick="sendMessage()" class="px-6 py-3 bg-primary text-white rounded-lg hover:bg-accent transition-all duration-300 transform hover:scale-[1.02] touch-feedback">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu functionality
+        function showMenu() {
+            document.getElementById('mobileMenu').classList.remove('hidden');
+            // Add animation class
+            document.getElementById('mobileMenu').classList.add('animate-fade-in');
+            // Prevent body scroll when menu is open
+            document.body.style.overflow = 'hidden';
+        }
+
+        function hideMenu() {
+            document.getElementById('mobileMenu').classList.add('hidden');
+            // Remove animation class
+            document.getElementById('mobileMenu').classList.remove('animate-fade-in');
+            // Restore body scroll
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close menu when clicking outside
+        document.getElementById('mobileMenu').addEventListener('click', function(e) {
+            if (e.target === this) {
+                hideMenu();
+            }
+        });
+
+        // Sync language selectors
+        document.getElementById('mobileLangSelect').addEventListener('change', function() {
+            document.getElementById('languageSelect').value = this.value;
+            changeLanguage();
+        });
+
+        // Add bottom padding to main content on mobile to account for bottom navigation
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.innerWidth < 768) {
+                document.body.style.paddingBottom = '4rem';
+            }
+        });
+
+        window.addEventListener('resize', function() {
+            if (window.innerWidth < 768) {
+                document.body.style.paddingBottom = '4rem';
+            } else {
+                document.body.style.paddingBottom = '0';
+            }
+        });
+
+        const translations = {
+            en: {
+                welcome: "Welcome",
+                healthOverview: "Here's your health overview",
+                bookAppointment: "Book Appointment",
+                medications: "Medications",
+                medicalReports: "Medical Reports",
+                patientData: "Patient Data",
+                medicalHistory: "Medical History"
+            },
+            hi: {
+                welcome: "स्वागत है",
+                healthOverview: "यहाँ आपका स्वास्थ्य विवरण है",
+                bookAppointment: "अपॉइंटमेंट बुक करें",
+                medications: "दवाएं",
+                medicalReports: "मेडिकल रिपोर्ट",
+                patientData: "मरीज़ का डेटा",
+                medicalHistory: "चिकित्सा इतिहास"
+            }
+            // Add more translations for other languages
+        };
+
+        function changeLanguage() {
+            const lang = document.getElementById('languageSelect').value;
+            const texts = translations[lang] || translations.en;
+            
+            // Update text content based on selected language
+            // Implementation would update all translatable elements
+        }
+
+        // Set user name from localStorage
+        document.addEventListener('DOMContentLoaded', function() {
+            const userName = localStorage.getItem('userName') || 'User';
+            document.getElementById('userName').textContent = userName;
+
+            // Check if user is authenticated
+            if (!localStorage.getItem('userEmail')) {
+                window.location.href = 'signin.html';
+            }
+        });
+
+        function logout() {
+            localStorage.removeItem('userEmail');
+            localStorage.removeItem('userName');
+            localStorage.removeItem('userRole');
+            window.location.href = 'signin.html';
+        }
+
+        // AI Doctor Chat functionality
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            if (!message) return;
+
+            // Add user message
+            addMessage(message, 'user');
+            input.value = '';
+
+            // Simulate AI response
+            setTimeout(() => {
+                const response = processMessage(message);
+                addMessage(response, 'ai');
+            }, 1000);
+        }
+
+        function addMessage(message, sender) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'flex gap-3 mb-4' + (sender === 'user' ? ' justify-end' : '');
+            
+            if (sender === 'ai') {
+                messageDiv.innerHTML = `
+                    <div class="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center">
+                        <i class="fas fa-robot text-white text-sm"></i>
+                    </div>
+                    <div class="bg-white p-3 rounded-lg shadow-sm max-w-[80%]">
+                        <p>${message}</p>
+                    </div>
+                `;
+            } else {
+                messageDiv.innerHTML = `
+                    <div class="bg-purple-500 p-3 rounded-lg shadow-sm max-w-[80%]">
+                        <p class="text-white">${message}</p>
+                    </div>
+                `;
+            }
+            
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function processMessage(message) {
+            // Simple keyword-based response system
+            const ophtermoTerms = ['eye', 'vision', 'retina', 'cornea', 'lens', 'optic'];
+            const hasOphtermoTerm = ophtermoTerms.some(term => message.toLowerCase().includes(term));
+            
+            if (hasOphtermoTerm) {
+                return "I understand you're asking about " + message + ". This is related to ophthalmology. I can provide more specific information about this topic. What would you like to know?";
+            } else {
+                return "I can only answer questions related to Opthermo medical terms. Please ask something related to eye health and vision.";
+            }
+        }
+
+        // Add enter key support for chat
+        document.getElementById('chatInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>
