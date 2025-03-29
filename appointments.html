@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Appointment - Artis Symbiose India</title>
+    <link href="/dist/output.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f3f4f6;
+        }
+        .gradient-card {
+            background: linear-gradient(135deg, #FF9933 0%, #FFFFFF 50%, #138808 100%);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="dashboard.html" class="text-2xl font-bold text-gray-800">Artis Symbiose India</a>
+                </div>
+                <div class="flex items-center gap-4">
+                    <!-- Language Selector -->
+                    <select id="languageSelect" class="bg-gray-50 rounded-lg px-3 py-1" onchange="changeLanguage()">
+                        <option value="en">English</option>
+                        <option value="hi">हिंदी</option>
+                        <option value="ta">தமிழ்</option>
+                        <option value="te">తెలుగు</option>
+                        <option value="bn">বাংলা</option>
+                        <option value="mr">मराठी</option>
+                    </select>
+                    <a href="dashboard.html" class="text-gray-600 hover:text-gray-900">
+                        <i class="fas fa-arrow-left mr-2"></i>Back to Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Header -->
+        <div class="gradient-card rounded-2xl p-8 mb-8 text-white">
+            <h1 class="text-3xl font-bold mb-2" id="headerTitle">Book an Appointment</h1>
+            <p class="opacity-90" id="headerSubtitle">Find and book appointments with hospitals near you</p>
+        </div>
+
+        <!-- Search and Booking Section -->
+        <div class="grid md:grid-cols-2 gap-8">
+            <!-- Search Form -->
+            <div class="bg-white rounded-2xl shadow-lg p-6">
+                <h2 class="text-2xl font-semibold mb-6" id="findHospitalsText">Find Hospitals</h2>
+                
+                <form id="searchForm" class="space-y-4">
+                    <div>
+                        <label class="block text-gray-700 mb-2" id="stateLabel">State</label>
+                        <select id="state" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="">Select State</option>
+                            <option value="AP">Andhra Pradesh</option>
+                            <option value="AR">Arunachal Pradesh</option>
+                            <option value="AS">Assam</option>
+                            <option value="BR">Bihar</option>
+                            <option value="CG">Chhattisgarh</option>
+                            <option value="GA">Goa</option>
+                            <option value="GJ">Gujarat</option>
+                            <option value="HR">Haryana</option>
+                            <option value="HP">Himachal Pradesh</option>
+                            <option value="JH">Jharkhand</option>
+                            <option value="KA">Karnataka</option>
+                            <option value="KL">Kerala</option>
+                            <option value="MP">Madhya Pradesh</option>
+                            <option value="MH">Maharashtra</option>
+                            <option value="MN">Manipur</option>
+                            <option value="ML">Meghalaya</option>
+                            <option value="MZ">Mizoram</option>
+                            <option value="NL">Nagaland</option>
+                            <option value="OR">Odisha</option>
+                            <option value="PB">Punjab</option>
+                            <option value="RJ">Rajasthan</option>
+                            <option value="SK">Sikkim</option>
+                            <option value="TN">Tamil Nadu</option>
+                            <option value="TG">Telangana</option>
+                            <option value="TR">Tripura</option>
+                            <option value="UP">Uttar Pradesh</option>
+                            <option value="UK">Uttarakhand</option>
+                            <option value="WB">West Bengal</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-700 mb-2" id="cityLabel">City</label>
+                        <input type="text" id="city" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter your city">
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-700 mb-2" id="pincodeLabel">Pincode</label>
+                        <input type="text" id="pincode" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter pincode">
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-700 mb-2" id="specialityLabel">Speciality</label>
+                        <select id="speciality" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="general">General Eye Care</option>
+                            <option value="cataract">Cataract Surgery</option>
+                            <option value="glaucoma">Glaucoma Treatment</option>
+                            <option value="retina">Retina Specialist</option>
+                            <option value="pediatric">Pediatric Eye Care</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="w-full py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors" id="searchButton">
+                        Search Hospitals
+                    </button>
+                </form>
+
+                <!-- Ayushman Bharat Integration -->
+                <div class="mt-6 p-4 bg-green-50 rounded-lg border border-green-200">
+                    <div class="flex items-center gap-3 mb-2">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Ayushman_Bharat_Logo.png/220px-Ayushman_Bharat_Logo.png" 
+                             alt="Ayushman Bharat" class="h-8">
+                        <h3 class="font-semibold text-green-800">Ayushman Bharat Coverage</h3>
+                    </div>
+                    <p class="text-sm text-green-700">Check if your treatment is covered under Ayushman Bharat PMJAY</p>
+                    <button class="mt-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm">
+                        Verify Eligibility
+                    </button>
+                </div>
+            </div>
+
+            <!-- Hospital List -->
+            <div class="bg-white rounded-2xl shadow-lg p-6">
+                <h2 class="text-2xl font-semibold mb-6" id="nearbyHospitalsText">Nearby Hospitals</h2>
+                
+                <div id="hospitalList" class="space-y-4">
+                    <!-- Sample Hospital Cards -->
+                    <div class="p-4 border border-gray-200 rounded-lg hover:border-blue-500 transition-colors">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <h3 class="font-semibold text-lg">AIIMS Eye Center</h3>
+                                <p class="text-gray-600 text-sm">Ansari Nagar, New Delhi</p>
+                                <p class="text-gray-600 text-sm">2.5 km away</p>
+                                <div class="flex items-center gap-2 mt-1">
+                                    <span class="text-green-600 text-sm">
+                                        <i class="fas fa-check-circle"></i> NABH Accredited
+                                    </span>
+                                    <span class="text-blue-600 text-sm">
+                                        <i class="fas fa-shield-alt"></i> Ayushman Bharat
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="text-green-600 text-sm font-medium">
+                                Available Today
+                            </div>
+                        </div>
+                        <div class="flex gap-2 mt-2">
+                            <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">Cataract Surgery</span>
+                            <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">Retina Specialist</span>
+                        </div>
+                        <button onclick="showBookingForm('AIIMS Eye Center')" class="mt-3 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-sm">
+                            Book Appointment
+                        </button>
+                    </div>
+
+                    <div class="p-4 border border-gray-200 rounded-lg hover:border-blue-500 transition-colors">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <h3 class="font-semibold text-lg">Sankara Nethralaya</h3>
+                                <p class="text-gray-600 text-sm">Chennai, Tamil Nadu</p>
+                                <p class="text-gray-600 text-sm">3.8 km away</p>
+                                <div class="flex items-center gap-2 mt-1">
+                                    <span class="text-green-600 text-sm">
+                                        <i class="fas fa-check-circle"></i> JCI Accredited
+                                    </span>
+                                    <span class="text-blue-600 text-sm">
+                                        <i class="fas fa-shield-alt"></i> Ayushman Bharat
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="text-green-600 text-sm font-medium">
+                                Available Today
+                            </div>
+                        </div>
+                        <div class="flex gap-2 mt-2">
+                            <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">General Eye Care</span>
+                            <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">Glaucoma Treatment</span>
+                        </div>
+                        <button onclick="showBookingForm('Sankara Nethralaya')" class="mt-3 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-sm">
+                            Book Appointment
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Booking Form Modal -->
+        <div id="bookingModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+            <div class="bg-white rounded-2xl p-6 max-w-md w-full mx-4">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-semibold" id="bookingFormTitle">Book Appointment</h2>
+                    <button onclick="hideBookingForm()" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <form id="bookingForm" class="space-y-4">
+                    <div>
+                        <label class="block text-gray-700 mb-2" id="selectedHospitalLabel">Selected Hospital</label>
+                        <input type="text" id="selectedHospital" class="w-full px-4 py-3 rounded-lg border border-gray-300 bg-gray-100" readonly>
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-700 mb-2" id="aadhaarLabel">Aadhaar Number</label>
+                        <input type="text" id="aadhaar" maxlength="12" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter 12-digit Aadhaar number">
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-700 mb-2" id="dateLabel">Preferred Date</label>
+                        <input type="date" id="appointmentDate" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-700 mb-2" id="timeLabel">Preferred Time</label>
+                        <select id="appointmentTime" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="09:00">9:00 AM</option>
+                            <option value="10:00">10:00 AM</option>
+                            <option value="11:00">11:00 AM</option>
+                            <option value="14:00">2:00 PM</option>
+                            <option value="15:00">3:00 PM</option>
+                            <option value="16:00">4:00 PM</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-700 mb-2" id="reasonLabel">Reason for Visit</label>
+                        <textarea id="visitReason" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" rows="3"></textarea>
+                    </div>
+
+                    <button type="submit" class="w-full py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors" id="confirmButton">
+                        Confirm Booking
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const translations = {
+            en: {
+                headerTitle: "Book an Appointment",
+                headerSubtitle: "Find and book appointments with hospitals near you",
+                findHospitals: "Find Hospitals",
+                nearbyHospitals: "Nearby Hospitals",
+                stateLabel: "State",
+                cityLabel: "City",
+                pincodeLabel: "Pincode",
+                specialityLabel: "Speciality",
+                searchButton: "Search Hospitals",
+                bookingFormTitle: "Book Appointment",
+                selectedHospitalLabel: "Selected Hospital",
+                aadhaarLabel: "Aadhaar Number",
+                dateLabel: "Preferred Date",
+                timeLabel: "Preferred Time",
+                reasonLabel: "Reason for Visit",
+                confirmButton: "Confirm Booking"
+            },
+            hi: {
+                headerTitle: "अपॉइंटमेंट बुक करें",
+                headerSubtitle: "आस-पास के अस्पतालों में अपॉइंटमेंट ढूंढें और बुक करें",
+                findHospitals: "अस्पताल खोजें",
+                nearbyHospitals: "आस-पास के अस्पताल",
+                stateLabel: "राज्य",
+                cityLabel: "शहर",
+                pincodeLabel: "पिनकोड",
+                specialityLabel: "विशेषज्ञता",
+                searchButton: "अस्पताल खोजें",
+                bookingFormTitle: "अपॉइंटमेंट बुक करें",
+                selectedHospitalLabel: "चयनित अस्पताल",
+                aadhaarLabel: "आधार नंबर",
+                dateLabel: "पसंदीदा तारीख",
+                timeLabel: "पसंदीदा समय",
+                reasonLabel: "विजिट का कारण",
+                confirmButton: "बुकिंग की पुष्टि करें"
+            }
+            // Add more translations for other languages
+        };
+
+        function changeLanguage() {
+            const lang = document.getElementById('languageSelect').value;
+            const texts = translations[lang] || translations.en;
+
+            // Update all text content
+            Object.keys(texts).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) {
+                    element.textContent = texts[key];
+                }
+            });
+        }
+
+        // Form Handling
+        document.getElementById('searchForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // In a real application, this would search for hospitals based on state and city
+            alert('Searching for hospitals...');
+        });
+
+        document.getElementById('bookingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const hospital = document.getElementById('selectedHospital').value;
+            const date = document.getElementById('appointmentDate').value;
+            const time = document.getElementById('appointmentTime').value;
+            const aadhaar = document.getElementById('aadhaar').value;
+            
+            if (!aadhaar || aadhaar.length !== 12) {
+                alert('Please enter a valid 12-digit Aadhaar number');
+                return;
+            }
+            
+            // In a real application, this would save the appointment
+            alert(`Appointment booked successfully at ${hospital} for ${date} at ${time}`);
+            hideBookingForm();
+        });
+
+        // Modal Functions
+        function showBookingForm(hospitalName) {
+            document.getElementById('selectedHospital').value = hospitalName;
+            document.getElementById('bookingModal').classList.remove('hidden');
+        }
+
+        function hideBookingForm() {
+            document.getElementById('bookingModal').classList.add('hidden');
+        }
+
+        // Check authentication
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!localStorage.getItem('userEmail')) {
+                window.location.href = 'signin.html';
+            }
+        });
+    </script>
+</body>
+</html>
