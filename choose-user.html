@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Choose Role - Artis Symbiose India</title>
+    <meta name="description" content="Digital Eye Care for All Indians">
+    <meta name="theme-color" content="#FF9933">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Artis Care">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link href="/dist/output.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="/app.js" defer></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #FF9933 0%, #FFFFFF 50%, #138808 100%);
+            min-height: 100vh;
+        }
+        .language-selector {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+    <!-- Language Selector -->
+    <div class="language-selector">
+        <select id="languageSelect" class="bg-white rounded-lg px-4 py-2 shadow-lg" onchange="changeLanguage()">
+            <option value="en">English</option>
+            <option value="hi">हिंदी</option>
+            <option value="ta">தமிழ்</option>
+            <option value="te">తెలుగు</option>
+            <option value="bn">বাংলা</option>
+            <option value="mr">मराठी</option>
+        </select>
+    </div>
+
+    <div class="max-w-4xl w-full bg-white rounded-2xl shadow-2xl overflow-hidden">
+        <div class="p-8 text-center">
+            <div class="flex justify-center mb-6">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/55/Emblem_of_India.svg" alt="Indian Emblem" class="h-20">
+            </div>
+            <h1 class="text-4xl font-bold mb-4 text-gray-800" id="welcomeText">Welcome to Artis Symbiose India</h1>
+            <p class="text-xl text-gray-600 mb-4" id="subtitleText">Digital Eye Care for All Indians</p>
+            <p class="text-md text-gray-500 mb-8" id="selectText">Please select your role to continue</p>
+            
+            <div class="grid md:grid-cols-2 gap-8 max-w-2xl mx-auto">
+                <!-- Patient Card -->
+                <div onclick="selectRole('patient')" class="cursor-pointer transform transition-transform hover:scale-105">
+                    <div class="bg-blue-50 rounded-xl p-6 border-2 border-blue-200 hover:border-blue-400 transition-colors">
+                        <div class="text-blue-500 mb-4">
+                            <i class="fas fa-user-injured text-6xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-semibold text-gray-800 mb-2" id="patientText">Patient</h2>
+                        <p class="text-gray-600" id="patientDescText">Access your medical records and manage medications</p>
+                        <div class="mt-4 text-sm text-gray-500">
+                            <i class="fas fa-id-card mr-2"></i>Aadhaar Linked
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hospital Card -->
+                <div onclick="selectRole('hospital')" class="cursor-pointer transform transition-transform hover:scale-105">
+                    <div class="bg-purple-50 rounded-xl p-6 border-2 border-purple-200 hover:border-purple-400 transition-colors">
+                        <div class="text-purple-500 mb-4">
+                            <i class="fas fa-hospital text-6xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-semibold text-gray-800 mb-2" id="hospitalText">Hospital</h2>
+                        <p class="text-gray-600" id="hospitalDescText">Manage patients and medical services</p>
+                        <div class="mt-4 text-sm text-gray-500">
+                            <i class="fas fa-check-circle mr-2"></i>Registered with AayinPrimeLLP
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Additional Info -->
+            <div class="mt-8 space-y-2">
+                <div class="text-sm text-gray-600">
+                    <p><i class="fas fa-shield-alt mr-2"></i>Made By Jai Saxena & Gaurav Saxena(CEO Of AayinPrimeLLP)</p>
+                    <p><i class="fas fa-phone-alt mr-2"></i>24/7 Support: 1800-XXX-XXXX</p>
+                </div>
+                <button id="installApp" style="display: none" class="w-full py-2 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+                    <i class="fas fa-download mr-2"></i>Install App
+                </button>
+                <p id="connectionStatus" class="text-center text-sm"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const translations = {
+            en: {
+                welcome: "Welcome to Artis Symbiose India",
+                subtitle: "Digital Eye Care for All Indians",
+                select: "Please select your role to continue",
+                patient: "Patient",
+                patientDesc: "Access your medical records and manage medications",
+                hospital: "Hospital",
+                hospitalDesc: "Manage patients and medical services"
+            },
+            hi: {
+                welcome: "आर्टिस सिम्बायोस इंडिया में आपका स्वागत है",
+                subtitle: "सभी भारतीयों के लिए डिजिटल नेत्र देखभाल",
+                select: "जारी रखने के लिए अपनी भूमिका चुनें",
+                patient: "मरीज़",
+                patientDesc: "अपने मेडिकल रिकॉर्ड देखें और दवाओं का प्रबंधन करें",
+                hospital: "अस्पताल",
+                hospitalDesc: "मरीजों और चिकित्सा सेवाओं का प्रबंधन करें"
+            }
+            // Add more translations for other languages
+        };
+
+        function changeLanguage() {
+            const lang = document.getElementById('languageSelect').value;
+            const texts = translations[lang] || translations.en;
+
+            document.getElementById('welcomeText').textContent = texts.welcome;
+            document.getElementById('subtitleText').textContent = texts.subtitle;
+            document.getElementById('selectText').textContent = texts.select;
+            document.getElementById('patientText').textContent = texts.patient;
+            document.getElementById('patientDescText').textContent = texts.patientDesc;
+            document.getElementById('hospitalText').textContent = texts.hospital;
+            document.getElementById('hospitalDescText').textContent = texts.hospitalDesc;
+        }
+
+        function selectRole(role) {
+            localStorage.setItem('userRole', role);
+            window.location.href = 'signin.html?role=' + role;
+        }
+    </script>
+</body>
+</html>
